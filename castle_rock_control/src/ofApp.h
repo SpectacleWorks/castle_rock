@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 
+//	Core OF
+#include "ofEvents.h"
+
 //	Addons
 #include "ofxMidi.h"
 #include "ofxXmlSettings.h"
@@ -19,7 +22,13 @@ public:
 	void draw();
 	void exit();
 
+	//	MIDI
 	void loadMidiSettings();
+
+	//	Arduino
+	void setupArduino1(const int& version);
+	void ard1_DigitalPinChanged(const int& pin_num);
+	void updateArduinos();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -42,4 +51,8 @@ public:
 	map<string, int> midi_settings; // room, midi channel
 	ofxMidiOut midiOut;
 
+
+	//	Arduino
+	ofArduino ard1;
+	bool b_SetupArd1;
 };

@@ -5,11 +5,14 @@ void ofApp::setup(){
 
 	//	OF Settings
 	ofBackground(0);
+	ofSetFrameRate(30);
 	ofSetLogLevel(OF_LOG_VERBOSE);
+	ofSetVerticalSync(true);
 
 	//	Read in XML settings
 	loadMidiSettings();
 
+	//*****************************************************************************
 	//	MIDI setup
 	//	Print the available output ports to the console
 	//	midiOut.listPorts();
@@ -20,11 +23,22 @@ void ofApp::setup(){
 		ofLogWarning("MIDI") << "Couldn't connect to MIDI port " << midi_port;
 	else
 		ofLogNotice("MIDI") << "connected to port " << midi_port << " SUCCESS!";
+
+	//*****************************************************************************
+	//	Arduino setup
+	//	Connect
+	if (!ard1.connect("COM1", 57600))
+		ofLogWarning("Arduino") << "Couldn't connect to Arduino 1";
+
+	ard1.sendFirmwareVersionRequest();
+	ofAddListener(ard1.EInitialized, this, &ofApp::setupArduino1);
+	b_SetupArd1 = false;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
+	updateArduinos();
 }
 
 //--------------------------------------------------------------
@@ -73,6 +87,39 @@ void ofApp::loadMidiSettings()
 	}
 
 	ofLogNotice("XML MIDI settings") << "SUCCESS!";
+}
+
+void ofApp::setupArduino1(const int & version){
+
+	//	Remove listener because we don't need it anymore
+	ofRemoveListener(ard1.EInitialized, this, &ofApp::setupArduino1);
+
+	//	It is now safe to send commands to the Arduino
+	b_SetupArd1 = true;
+	
+	//	Print firmware name and version to the console
+	ofLogNotice() << ard1.getFirmwareName();
+	ofLogNotice() << "firmata v" << ard1.getMajorFirmwareVersion() << "." << ard1.getMinorFirmwareVersion();
+
+	//	Set pin D2 as digital input
+	ard1.sendDigitalPinMode(2, ARD_INPUT);
+
+	//	Listen for changes on the digital pins
+	ofAddListener(ard1.EDigitalPinChanged, this, &ofApp::ard1_DigitalPinChanged);
+}
+
+void ofApp::ard1_DigitalPinChanged(const int & pin_num)
+{
+	if (ard1.getDigital(pin_num))
+	{
+		midiOut.sendNoteOn(1, NOTE, VELOCITY);
+	}
+}
+
+void ofApp::updateArduinos()
+{
+	//	Update the arduino, get any data or messages (required)
+	ard1.update();
 }
 
 //--------------------------------------------------------------
