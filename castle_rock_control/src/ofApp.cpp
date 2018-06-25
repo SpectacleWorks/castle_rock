@@ -10,35 +10,16 @@ void ofApp::setup(){
 	ofSetVerticalSync(true);
 
 	//	Read in XML settings
-	loadMidiSettings();
-
-	//*****************************************************************************
-	//	MIDI setup
-	//	Print the available output ports to the console
-	//	midiOut.listPorts();
-	//	Connect
-	bool b_MIDI_Connect = midiOut.openPort(midi_port);
-
-	if (!b_MIDI_Connect)
-		ofLogWarning("MIDI") << "Couldn't connect to MIDI port " << midi_port;
-	else
-		ofLogNotice("MIDI") << "connected to port " << midi_port << " SUCCESS!";
-
-	//*****************************************************************************
-	//	Arduino setup
-	//	Connect
-	if (!ard1.connect("COM1", 57600))
-		ofLogWarning("Arduino") << "Couldn't connect to Arduino 1";
-
-	ard1.sendFirmwareVersionRequest();
-	ofAddListener(ard1.EInitialized, this, &ofApp::setupArduino1);
-	b_SetupArd1 = false;
+	loadSceneSettings();
+	//	Connect to MIDI port
+	setupMIDI();
+	//	Initialize arduinos
+	initArduinos();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
-	updateArduinos();
+	updateArduino();
 }
 
 //--------------------------------------------------------------
@@ -53,73 +34,97 @@ void ofApp::exit() {
 	midiOut.closePort();
 }
 
-void ofApp::loadMidiSettings()
+void ofApp::loadSceneSettings()
 {
 	//	Load general settings
-	xml_midi_settings.loadFile("midi_settings.xml");
-	midi_port = xml_midi_settings.getValue("general:port_name", "");
-	num_channels = xml_midi_settings.getValue("general:num_channels", 0);
+	scene_settings.loadFile("scene_settings.xml");
+	midi_port = scene_settings.getValue("general:midi_port_name", "");
+	num_scenes = scene_settings.getValue("general:num_scenes", 0);
+	num_arduinos = scene_settings.getValue("general:num_arduinos", 0);
 
-	if (midi_port == "" || num_channels == 0)
-		ofLogWarning("XML MIDI Settings") << "Couldn't locate port name or number of channels";
+	if (midi_port == "" || num_scenes == 0 || num_arduinos == 0)
+		ofLogWarning("XML MIDI Settings") << "Missing general properties";
 	else {
 		ofLogNotice("MIDI Port Name") << midi_port;
-		ofLogNotice("MIDI channels") << num_channels;
+		ofLogNotice("Number of scenes") << num_scenes;
 	}
 
-	for (int i = 0; i < num_channels; ++i)
+	//	Load individual scene settings
+	for (int i = 0; i < num_scenes; ++i)
 	{
-		//	Load settings for each channel
-		string tag = "channel" + ofToString(i+1);
-		string room = xml_midi_settings.getValue(tag + ":room", "");
-		int channel = xml_midi_settings.getValue(tag + ":midi_channel", 0);
+		scenes.push_back(new Scene());
+		scenes.at(i)->name = scene_settings.getValue("scene:name", "", i);
+		scenes.at(i)->length = scene_settings.getValue("scene:length", 0, i);
+		scenes.at(i)->ard_port = scene_settings.getValue("scene:arduino_port", "", i);
+		scenes.at(i)->num_rooms = scene_settings.getValue("scene:num_rooms", 0, i);
+		scenes.at(i)->rooms.assign(scenes.at(i)->num_rooms, Room());
 
-		//	Error hanndling
-		if (room == "" || channel == -1)
+		scene_settings.pushTag("scene", i);
+
+		//	Load individual room settings
+		for (int j = 0; j < scenes.at(i)->num_rooms; ++j)
 		{
-			ofLogWarning("XML MIDI settings") << "Couldn't locate room or MIDI channel";
+			scene_settings.pushTag("room", j);
+			scenes.at(i)->rooms.at(j).name = scene_settings.getValue("name", "");
+			scenes.at(i)->rooms.at(j).midi_channel = scene_settings.getValue("midi_channel", 0);
+			scene_settings.popTag();
 		}
 
-		//	Add it to the map
-		midi_settings.insert(pair<string, int>(room, channel));
+		scene_settings.popTag();
 
-		ofLogNotice("MIDI route") << room << " sent to MIDI channel " << channel;
+		//	Validate scene settings
+		if (scenes.at(i)->name == "" || scenes.at(i)->length == 0 || scenes.at(i)->num_rooms == 0)
+			ofLogWarning("XML Settings") << "Missing properties for scene " << i;
 	}
 
-	ofLogNotice("XML MIDI settings") << "SUCCESS!";
+	ofLogNotice("XML settings") << "SUCCESS!";
 }
 
-void ofApp::setupArduino1(const int & version){
-
-	//	Remove listener because we don't need it anymore
-	ofRemoveListener(ard1.EInitialized, this, &ofApp::setupArduino1);
-
-	//	It is now safe to send commands to the Arduino
-	b_SetupArd1 = true;
-	
-	//	Print firmware name and version to the console
-	ofLogNotice() << ard1.getFirmwareName();
-	ofLogNotice() << "firmata v" << ard1.getMajorFirmwareVersion() << "." << ard1.getMinorFirmwareVersion();
-
-	//	Set pin D2 as digital input
-	ard1.sendDigitalPinMode(2, ARD_INPUT);
-
-	//	Listen for changes on the digital pins
-	ofAddListener(ard1.EDigitalPinChanged, this, &ofApp::ard1_DigitalPinChanged);
-}
-
-void ofApp::ard1_DigitalPinChanged(const int & pin_num)
+void ofApp::setupMIDI()
 {
-	if (ard1.getDigital(pin_num))
+	//	Print the available output ports to the console
+	//	midiOut.listPorts();
+	//	Connect
+	bool b_MIDI_Connect = midiOut.openPort(midi_port);
+
+	if (!b_MIDI_Connect)
+		ofLogWarning("MIDI") << "Couldn't connect to MIDI port " << midi_port;
+	else
+		ofLogNotice("MIDI") << "connected to port " << midi_port << " SUCCESS!";
+}
+
+void ofApp::initArduinos()
+{
+	//	Connect the arduino
+	/*
+	scenes.at(0)->ard = &ard;
+	ard.connect("COM1", 57600);
+
+	//	Dumb Windows hack to force the Arduino to reset after port is opened
+	ard.sendFirmwareVersionRequest();
+
+	//	Listen for EInitialized notification. this indicates that
+	//	the arduino is ready to receive commands and it is safe to
+	//	call setupArduino()
+	ofAddListener(ard.EInitialized, scenes.at(0), &Scene::setupArduino);
+	bSetupArd = false;
+	*/
+
+	for (int i = 0; i < scenes.size(); ++i)
 	{
-		midiOut.sendNoteOn(1, NOTE, VELOCITY);
-	}
-}
+		int ard_count = ards.size();
 
-void ofApp::updateArduinos()
-{
-	//	Update the arduino, get any data or messages (required)
-	ard1.update();
+		//if (scenes.at(i)->ard_port != "")
+		if (scenes.at(i)->ard_port == "COM1")
+		{
+			ofArduino new_ard;
+			ards.push_back(new_ard);
+			scenes.at(i)->ard = &ards.at(ard_count);
+			scenes.at(i)->ard->connect(scenes.at(i)->ard_port, 57600);
+			scenes.at(i)->ard->sendFirmwareVersionRequest();
+			ofAddListener(scenes.at(i)->ard->EInitialized, scenes.at(i), &Scene::setupArduino);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -194,6 +199,43 @@ void ofApp::windowResized(int w, int h){
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
 
+}
+
+void ofApp::setupArduino(const int & version)
+{
+	//	Remove listener because we don't need it anymore
+	ofRemoveListener(ard.EInitialized, this, &ofApp::setupArduino);
+
+	//	It is now safe to send commands to the Arduino
+	bSetupArd = true;
+
+	//	Print firmware name and version to the console
+	ofLogNotice() << ard.getFirmwareName();
+	ofLogNotice() << "firmata v" << ard.getMajorFirmwareVersion() << "." << ard.getMinorFirmwareVersion();
+
+	//	Set pin D2 as digital input
+	ard.sendDigitalPinMode(2, ARD_INPUT);
+
+	//	Listen for changes on the digital and analog pins
+	ofAddListener(ard.EDigitalPinChanged, this, &ofApp::digitalPinChanged);
+}
+
+void ofApp::digitalPinChanged(const int & pin_num)
+{
+}
+
+void ofApp::analogPinChanged(const int & pin_num)
+{
+}
+
+void ofApp::updateArduino()
+{
+	//ard.update();
+
+	for (int i = 0; i < ards.size(); ++i)
+	{
+		ards.at(i).update();
+	}
 }
 
 //--------------------------------------------------------------

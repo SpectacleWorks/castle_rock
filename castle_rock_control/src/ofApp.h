@@ -9,6 +9,9 @@
 #include "ofxMidi.h"
 #include "ofxXmlSettings.h"
 
+//	Project Headers
+#include "Scene.h"
+
 //	Global variables
 const int NOTE = 60;		//	C3 in MIDI land
 const int VELOCITY = 64;
@@ -22,13 +25,10 @@ public:
 	void draw();
 	void exit();
 
-	//	MIDI
-	void loadMidiSettings();
-
-	//	Arduino
-	void setupArduino1(const int& version);
-	void ard1_DigitalPinChanged(const int& pin_num);
-	void updateArduinos();
+	//	Setup
+	void loadSceneSettings();
+	void setupMIDI();
+	void initArduinos();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -43,16 +43,23 @@ public:
 	void gotMessage(ofMessage msg);
 
 	//	XML Settings
-	ofxXmlSettings xml_midi_settings;
+	ofxXmlSettings scene_settings;
 	
 	//	Sounds & MIDI
-	int num_channels;
 	string midi_port;
-	map<string, int> midi_settings; // room, midi channel
 	ofxMidiOut midiOut;
 
+	//	Scenes
+	vector<Scene*> scenes;
+	int num_scenes;
+	int num_arduinos;
 
-	//	Arduino
-	ofArduino ard1;
-	bool b_SetupArd1;
+	ofArduino ard;
+	vector<ofArduino> ards;
+	bool bSetupArd;
+
+	void setupArduino(const int& version);
+	void digitalPinChanged(const int& pin_num);
+	void analogPinChanged(const int& pin_num);
+	void updateArduino();
 };
