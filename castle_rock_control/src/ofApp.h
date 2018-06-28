@@ -20,6 +20,8 @@ class ofApp : public ofBaseApp{
 
 public:
 
+	//*******************************************
+	//	Members
 	void setup();
 	void update();
 	void draw();
@@ -30,6 +32,10 @@ public:
 	void setupMIDI();
 	void initArduinos();
 
+	//	Updates
+	void updateArduinos();
+
+	//	Events
 	void keyPressed(int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y );
@@ -41,6 +47,9 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
+
+	//*******************************************
+	//	Data
 
 	//	XML Settings
 	ofxXmlSettings scene_settings;
@@ -54,12 +63,11 @@ public:
 	int num_scenes;
 	int num_arduinos;
 
-	ofArduino ard;
-	vector<ofArduino> ards;
-	bool bSetupArd;
+	//	Arduinos
+	vector<ofArduino*> ards;
 
-	void setupArduino(const int& version);
+	//void setupArduino(const int& version);
 	void digitalPinChanged(const int& pin_num);
 	void analogPinChanged(const int& pin_num);
-	void updateArduino();
+	
 };

@@ -19,7 +19,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	updateArduino();
+	updateArduinos();
 }
 
 //--------------------------------------------------------------
@@ -96,30 +96,14 @@ void ofApp::setupMIDI()
 void ofApp::initArduinos()
 {
 	//	Connect the arduino
-	/*
-	scenes.at(0)->ard = &ard;
-	ard.connect("COM1", 57600);
-
-	//	Dumb Windows hack to force the Arduino to reset after port is opened
-	ard.sendFirmwareVersionRequest();
-
-	//	Listen for EInitialized notification. this indicates that
-	//	the arduino is ready to receive commands and it is safe to
-	//	call setupArduino()
-	ofAddListener(ard.EInitialized, scenes.at(0), &Scene::setupArduino);
-	bSetupArd = false;
-	*/
-
 	for (int i = 0; i < scenes.size(); ++i)
 	{
 		int ard_count = ards.size();
 
-		//if (scenes.at(i)->ard_port != "")
-		if (scenes.at(i)->ard_port == "COM1")
+		if (scenes.at(i)->ard_port != "")
 		{
-			ofArduino new_ard;
-			ards.push_back(new_ard);
-			scenes.at(i)->ard = &ards.at(ard_count);
+			ards.push_back(new ofArduino);
+			scenes.at(i)->ard = ards.at(ard_count);
 			scenes.at(i)->ard->connect(scenes.at(i)->ard_port, 57600);
 			scenes.at(i)->ard->sendFirmwareVersionRequest();
 			ofAddListener(scenes.at(i)->ard->EInitialized, scenes.at(i), &Scene::setupArduino);
@@ -200,7 +184,7 @@ void ofApp::windowResized(int w, int h){
 void ofApp::gotMessage(ofMessage msg){
 
 }
-
+/*
 void ofApp::setupArduino(const int & version)
 {
 	//	Remove listener because we don't need it anymore
@@ -219,7 +203,7 @@ void ofApp::setupArduino(const int & version)
 	//	Listen for changes on the digital and analog pins
 	ofAddListener(ard.EDigitalPinChanged, this, &ofApp::digitalPinChanged);
 }
-
+*/
 void ofApp::digitalPinChanged(const int & pin_num)
 {
 }
@@ -228,13 +212,11 @@ void ofApp::analogPinChanged(const int & pin_num)
 {
 }
 
-void ofApp::updateArduino()
+void ofApp::updateArduinos()
 {
-	//ard.update();
-
 	for (int i = 0; i < ards.size(); ++i)
 	{
-		ards.at(i).update();
+		ards.at(i)->update();
 	}
 }
 

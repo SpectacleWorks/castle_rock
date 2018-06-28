@@ -32,7 +32,6 @@
 		<name>shawshank</name>
 		<midi_channel>3</midi_channel>
 	</room>
-	
 </scene>
 
 <scene>
@@ -45,7 +44,6 @@
 		<name>underwater</name>
 		<midi_channel>4</midi_channel>
 	</room>
-
 </scene>
 
 <scene>
@@ -62,7 +60,6 @@
 <scene>
 	<name>injection</name>
 	<length>10</length>
-	<arduino_port>COM3</arduino_port>
 	<num_rooms>1</num_rooms>
 
 	<room>

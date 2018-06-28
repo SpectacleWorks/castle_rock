@@ -38,7 +38,12 @@ void Scene::setupArduino(const int & version)
 	ofAddListener(ard->EDigitalPinChanged, this, &Scene::digitalPinChanged);
 }
 
+void Scene::launchScene()
+{
+	start_time = ofGetElapsedTimef();
+}
+
 void Scene::digitalPinChanged(const int & pin_num)
 {
-	ofLogNotice("Digital signal received") << pin_num;
+	ofLogNotice("Digital signal received") << "Pin: " << pin_num << " Scene: " << name;
 }
