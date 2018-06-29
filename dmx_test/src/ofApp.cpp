@@ -11,21 +11,36 @@ void ofApp::setup(){
 		ofLogNotice("Connected") << "DMX ready";
 	}
 
-	//	Set initial level to zero
-	level = 127;
-	dmx.setLevel(1, level);
+	//	Set initial levels
+
+	chan1.set("Channel 1", 120, 0, 255);
+	chan2.set("Channel 2", 120, 0, 255);
+	chan3.set("Channel 3", 120, 0, 255);
+	chan4.set("Channel 4", 120, 0, 255);
+
+	panel.setName("Panel");
+	panel.setup();
+	panel.add(chan1);
+	panel.add(chan2);
+	panel.add(chan3);
+	panel.add(chan4);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	dmx.setLevel(1, chan1);
+	dmx.setLevel(2, chan2);
+	dmx.setLevel(3, chan3);
+	dmx.setLevel(4, chan4);
 	dmx.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	ofSetColor(0);
-	ofDrawBitmapString(ofToString(level), 20, 20);
+	//ofSetColor(0);
+	//ofDrawBitmapString(ofToString(level), 20, 20);
+
+	panel.draw();
 }
 
 //--------------------------------------------------------------
@@ -43,14 +58,12 @@ void ofApp::keyPressed(int key){
 		level += 10;
 		if (level > 255) level = 255;
 		dmx.setLevel(1, level);
-		dmx.update();
 	}
 	else if (key == OF_KEY_DOWN)
 	{
 		level -= 10;
 		if (level < 0) level = 0;
 		dmx.setLevel(1, level);
-		dmx.update();
 	}
 }
 

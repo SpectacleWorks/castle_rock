@@ -4,6 +4,7 @@
 
 //	Addons
 #include "ofxDmx.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -28,5 +29,9 @@ public:
 	ofxDmx dmx;
 	int level;
 
-
+	ofxPanel panel;
+	ofParameter<int> chan1;
+	ofParameter<int> chan2;
+	ofParameter<int> chan3;
+	ofParameter<int> chan4;
 };
