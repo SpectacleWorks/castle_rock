@@ -6,6 +6,8 @@
 #include "ofEvents.h"
 
 //	Addons
+#include "ofxDmx.h"
+#include "ofxGui.h"
 #include "ofxMidi.h"
 #include "ofxXmlSettings.h"
 
@@ -30,6 +32,7 @@ public:
 	//	Setup
 	void loadSceneSettings();
 	void setupMIDI();
+	void setupDMX();
 	void initArduinos();
 
 	//	Updates
@@ -60,14 +63,22 @@ public:
 
 	//	Scenes
 	vector<Scene*> scenes;
+	map<string, Scene*> scene_map;
 	int num_scenes;
 	int num_arduinos;
 
 	//	Arduinos
 	vector<ofArduino*> ards;
+	
+	//	DMX
+	string dmx_port;
+	ofxDmx dmx;
+
+	//	GUI
+
 
 	//void setupArduino(const int& version);
-	void digitalPinChanged(const int& pin_num);
-	void analogPinChanged(const int& pin_num);
+	//void digitalPinChanged(const int& pin_num);
+	//void analogPinChanged(const int& pin_num);
 	
 };

@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 
+//	Addons
+#include "ofxSoundPlayerMultiOutput.h"
+
 class ofApp : public ofBaseApp{
 
 public:
@@ -23,6 +26,10 @@ public:
 
 	ofSoundStream s_stream;
 	ofSoundDevice s_device;
-	ofSoundPlayer s_player;
-		
+	//ofSoundPlayer s_player;
+	ofxSoundPlayerMultiOutput s_player;
+	
+	int deviceID;
+
+	vector<float> sound_levels;
 };

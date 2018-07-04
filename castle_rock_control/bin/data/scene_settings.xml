@@ -1,5 +1,6 @@
 <general>
 	<midi_port_name>OF2Ableton 1</midi_port_name>
+	<dmx_port>COM5</dmx_port>
 	<num_scenes>5</num_scenes>
 	<num_arduinos>3</num_arduinos>
 </general>
@@ -23,26 +24,34 @@
 	<room>
 		<name>it</name>
 		<midi_channel>1</midi_channel>
+		<dmx_channel>1</dmx_channel>
+		<dmx_init_level>64</dmx_init_level>
 	</room>
 	<room>
 		<name>shining</name>
 		<midi_channel>2</midi_channel>
+		<dmx_channel>2</dmx_channel>
+		<dmx_init_level>64</dmx_init_level>
 	</room>
 	<room>
 		<name>shawshank</name>
 		<midi_channel>3</midi_channel>
+		<dmx_channel>3</dmx_channel>
+		<dmx_init_level>64</dmx_init_level>
 	</room>
 </scene>
 
 <scene>
 	<name>underwater</name>
-	<length>10</length>
-	<arduino_port>COM2</arduino_port>
+	<length>30</length>
+	<arduino_port>COM6</arduino_port>
 	<num_rooms>1</num_rooms>
 
 	<room>
 		<name>underwater</name>
 		<midi_channel>4</midi_channel>
+		<dmx_channel>4</dmx_channel>
+		<dmx_init_level>64</dmx_init_level>
 	</room>
 </scene>
 
@@ -60,6 +69,7 @@
 <scene>
 	<name>injection</name>
 	<length>10</length>
+	<arduino_port>COM2</arduino_port>
 	<num_rooms>1</num_rooms>
 
 	<room>

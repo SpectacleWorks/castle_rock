@@ -1,4 +1,4 @@
 ofxDmx
+ofxGui
 ofxMidi
-ofxSoundPlayerMultiOutput
 ofxXmlSettings

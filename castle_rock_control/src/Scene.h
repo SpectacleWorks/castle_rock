@@ -2,10 +2,16 @@
 
 #include "ofMain.h"
 
+//	Addons
+#include "ofxDmx.h"
+#include "ofxMidi.h"
+
 struct Room
 {
 	string name;
 	int midi_channel;
+	int dmx_channel;
+	int dmx_init_level;
 };
 
 class Scene
@@ -17,10 +23,17 @@ public:
 
 	//*******************************************
 	//	Methods
-	void connectArduino();
 	void setupArduino(const int & version);
 
+	void initScene();
 	void launchScene();
+	void updateScene();
+	void endScene();
+	void lightsOff();
+
+	void updateSeparationRooms();
+	void updateUnderwaterRoom();
+	void updateInjectionRoom();
 
 	void digitalPinChanged(const int& pin_num);
 
@@ -33,6 +46,8 @@ public:
 	float start_time;
 	float run_time;
 
+	bool b_Running;
+
 	//	Rooms
 	vector<Room> rooms;
 
@@ -40,4 +55,12 @@ public:
 	ofArduino* ard;
 	bool b_SetupArd;
 	string ard_port;
+
+	//	MIDI
+	ofxMidiOut* midiOut;
+	const int NOTE = 60;		//	C3 in MIDI land
+	const int VELOCITY = 100;
+
+	//	DMX
+	ofxDmx* dmx;
 };

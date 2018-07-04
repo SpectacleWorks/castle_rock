@@ -7,15 +7,39 @@
 		<ClCompile Include="src\main.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxSoundPlayerMultiOutput\src\ofxSoundPlayerMultiOutput.cpp">
+			<Filter>addons\ofxSoundPlayerMultiOutput\src</Filter>
+		</ClCompile>
 	</ItemGroup>
 	<ItemGroup>
 		<Filter Include="src">
 			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
 		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxSoundPlayerMultiOutput">
+			<UniqueIdentifier>{E5120297-9BD2-0ECA-7969-DB0E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxSoundPlayerMultiOutput\src">
+			<UniqueIdentifier>{F7758F0E-5C06-B484-DEEB-A547}</UniqueIdentifier>
+		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h">
 			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxSoundPlayerMultiOutput\src\ofxSoundPlayerMultiOutput.h">
+			<Filter>addons\ofxSoundPlayerMultiOutput\src</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>

@@ -14,6 +14,7 @@ void ofApp::setup(){
 		if (s_devices.at(i).name == "MOTU Pro Audio")
 		{
 			s_device = s_devices.at(i);
+			deviceID = i;
 			ofLogNotice("Found MOTU") << "Ready for audio";
 		}
 	}
@@ -25,13 +26,21 @@ void ofApp::setup(){
 	}
 
 	//	You can set the device via index or device name
-	s_stream.setDevice(s_device);
+	//s_stream.setDevice(s_device);
+	ofModMulti::ofFmodSelectDriver(deviceID);
 	
 	//	If you need to, set the soundstream settings
 	//s_stream.setup(2, 2, 48000, 512, 0);
 
 	//	Load up a sound
-	s_player.load("bell.wav");
+	//s_player.load("bell.wav");
+	s_player.loadSound("bell.wav");
+	//for (int i = 0; i < 4; ++i)
+	//{
+	//	s_player.setVolumeAt(i, 0.0);
+	//}
+	//s_player.setVolumeAt(0, 1.0);
+	
 }
 
 //--------------------------------------------------------------
