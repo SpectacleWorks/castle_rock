@@ -73,12 +73,5 @@ public:
 	//	DMX
 	string dmx_port;
 	ofxDmx dmx;
-
-	//	GUI
-
-
-	//void setupArduino(const int& version);
-	//void digitalPinChanged(const int& pin_num);
-	//void analogPinChanged(const int& pin_num);
 	
 };

@@ -38,6 +38,52 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+	//	Draw scene statuses
+	//	Separation rooms
+	if (scene_map.at("separation")->b_Running)
+	{
+		ofSetColor(146, 45, 80);
+		ofDrawRectangle(20, 20, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Separation rooms running...", 30, 45);
+	}
+	else
+	{
+		ofSetColor(4, 80, 98);
+		ofDrawRectangle(20, 20, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Separation rooms idle...", 30, 45);
+	}
+	//	Underwater room
+	if (scene_map.at("underwater")->b_Running)
+	{
+		ofSetColor(146, 45, 80);
+		ofDrawRectangle(20, 80, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Underwater room running...", 30, 105);
+	}
+	else
+	{
+		ofSetColor(4, 80, 98);
+		ofDrawRectangle(20, 80, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Underwater room idle...", 30, 105);
+	}
+	//	Injection room
+	if (scene_map.at("injection")->b_Running)
+	{
+		ofSetColor(146, 45, 80);
+		ofDrawRectangle(20, 140, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Injection room running...", 30, 165);
+	}
+	else
+	{
+		ofSetColor(4, 80, 98);
+		ofDrawRectangle(20, 140, 472, 40);
+		ofSetColor(255);
+		ofDrawBitmapString("Injection room idle...", 30, 165);
+	}
 }
 
 //--------------------------------------------------------------
@@ -144,7 +190,7 @@ void ofApp::setupDMX()
 	}
 
 	//	Connect
-	bool b_DMX_Connect = dmx.connect("COM5");
+	bool b_DMX_Connect = dmx.connect(dmx_port);
 
 	if (!b_DMX_Connect)
 		ofLogWarning("DMX") << "Couldn't connect to DMX interface through port " << dmx_port;
@@ -270,32 +316,3 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
-/*
-void ofApp::setupArduino(const int & version)
-{
-//	Remove listener because we don't need it anymore
-ofRemoveListener(ard.EInitialized, this, &ofApp::setupArduino);
-
-//	It is now safe to send commands to the Arduino
-bSetupArd = true;
-
-//	Print firmware name and version to the console
-ofLogNotice() << ard.getFirmwareName();
-ofLogNotice() << "firmata v" << ard.getMajorFirmwareVersion() << "." << ard.getMinorFirmwareVersion();
-
-//	Set pin D2 as digital input
-ard.sendDigitalPinMode(2, ARD_INPUT);
-
-//	Listen for changes on the digital and analog pins
-ofAddListener(ard.EDigitalPinChanged, this, &ofApp::digitalPinChanged);
-}
-
-void ofApp::digitalPinChanged(const int & pin_num)
-{
-}
-
-void ofApp::analogPinChanged(const int & pin_num)
-{
-}
-*/

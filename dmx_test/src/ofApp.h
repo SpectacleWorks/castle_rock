@@ -34,4 +34,8 @@ public:
 	ofParameter<int> chan2;
 	ofParameter<int> chan3;
 	ofParameter<int> chan4;
+	ofParameter<int> chan5;
+	ofParameter<int> chan6;
+	ofParameter<int> chan7;
+	ofParameter<int> chan8;
 };

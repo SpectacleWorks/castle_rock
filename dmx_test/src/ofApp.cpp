@@ -17,6 +17,10 @@ void ofApp::setup(){
 	chan2.set("Channel 2", 120, 0, 255);
 	chan3.set("Channel 3", 120, 0, 255);
 	chan4.set("Channel 4", 120, 0, 255);
+	chan5.set("Channel 5", 120, 0, 255);
+	chan6.set("Channel 6", 120, 0, 255);
+	chan7.set("Channel 7", 120, 0, 255);
+	chan8.set("Channel 8", 120, 0, 255);
 
 	panel.setName("Panel");
 	panel.setup();
@@ -24,6 +28,10 @@ void ofApp::setup(){
 	panel.add(chan2);
 	panel.add(chan3);
 	panel.add(chan4);
+	panel.add(chan5);
+	panel.add(chan6);
+	panel.add(chan7);
+	panel.add(chan8);
 }
 
 //--------------------------------------------------------------
@@ -32,6 +40,10 @@ void ofApp::update(){
 	dmx.setLevel(2, chan2);
 	dmx.setLevel(3, chan3);
 	dmx.setLevel(4, chan4);
+	dmx.setLevel(5, chan5);
+	dmx.setLevel(6, chan6);
+	dmx.setLevel(7, chan7);
+	dmx.setLevel(8, chan8);
 	dmx.update();
 }
 

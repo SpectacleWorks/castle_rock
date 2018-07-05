@@ -17,7 +17,7 @@
 
 <scene>
 	<name>separation</name>
-	<length>10</length>
+	<length>120</length>
 	<arduino_port>COM1</arduino_port>
 	<num_rooms>3</num_rooms>
 
