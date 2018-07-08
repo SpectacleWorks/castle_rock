@@ -6,12 +6,18 @@
 #include "ofxDmx.h"
 #include "ofxMidi.h"
 
+//	Constants
+const int IT_DRAIN_LC = 1;
+const int IT_CEILING_LC = 2;
+
 struct Room
 {
 	string name;
 	int midi_channel;
-	int dmx_channel;
-	int dmx_init_level;
+	map<int, int> dmx_map;
+	vector<int> dmx_channels;
+	//int dmx_channel;
+	//int dmx_init_level;
 };
 
 class Scene
@@ -25,16 +31,19 @@ public:
 	//	Methods
 	void setupArduino(const int & version);
 
-	void initScene();
-	void launchScene();
-	void updateScene();
-	void endScene();
+	virtual void initScene();
+	virtual void launchScene();
+	virtual void updateScene();
+	virtual void endScene();
+
 	void eStop();
 	void lightsOff();
 
 	void updateSeparationRooms();
 	void updateUnderwaterRoom();
 	void updateInjectionRoom();
+
+	void updateITlights();
 
 	void digitalPinChanged(const int& pin_num);
 
@@ -51,7 +60,8 @@ public:
 	bool b_Running;
 
 	//	Rooms
-	vector<Room> rooms;
+	vector<Room*> rooms;
+	map<string, Room*> room_map;
 
 	//	Arduino
 	ofArduino* ard;

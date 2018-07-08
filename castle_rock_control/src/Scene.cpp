@@ -47,7 +47,11 @@ void Scene::initScene()
 	//	Set intial light levels
 	for (int i = 0; i < rooms.size(); ++i)
 	{
-		dmx->setLevel(rooms.at(i).dmx_channel, rooms.at(i).dmx_init_level);
+		for (int j = 0; j < rooms.at(i)->dmx_map.size(); ++j)
+		{
+			int channel = rooms.at(i)->dmx_channels.at(j);
+			dmx->setLevel(channel, rooms.at(i)->dmx_map.at(channel));
+		}
 	}
 	dmx->update();
 }
@@ -64,9 +68,9 @@ void Scene::launchScene()
 	//	Launch MIDI
 	for (int i = 0; i < rooms.size(); ++i)
 	{
-		if (rooms.at(i).midi_channel != 0)
+		if (rooms.at(i)->midi_channel != 0)
 		{
-			midiOut->sendNoteOn(rooms.at(i).midi_channel, NOTE, VELOCITY);
+			midiOut->sendNoteOn(rooms.at(i)->midi_channel, NOTE, VELOCITY);
 		}
 	}
 
@@ -141,9 +145,9 @@ void Scene::endScene()
 	//	Send any necessary MIDI note off messages
 	for (int i = 0; i < rooms.size(); ++i)
 	{
-		if (rooms.at(i).midi_channel != 0)
+		if (rooms.at(i)->midi_channel != 0)
 		{
-			midiOut->sendNoteOff(rooms.at(i).midi_channel, NOTE, 0);
+			midiOut->sendNoteOff(rooms.at(i)->midi_channel, NOTE, 0);
 		}
 	}
 	
@@ -164,7 +168,11 @@ void Scene::eStop(){
 	//	Set light levels to max brightness
 	for (int i = 0; i < rooms.size(); ++i)
 	{
-		dmx->setLevel(rooms.at(i).dmx_channel, 255);
+		for (int j = 0; j < rooms.at(i)->dmx_channels.size(); ++j)
+		{
+			int channel = rooms.at(i)->dmx_channels.at(j);
+			dmx->setLevel(channel, 255);
+		}
 	}
 	dmx->update();
 }
@@ -175,7 +183,11 @@ void Scene::lightsOff()
 	//	Set light levels to zero
 	for (int i = 0; i < rooms.size(); ++i)
 	{
-		dmx->setLevel(rooms.at(i).dmx_channel, 0);
+		for (int j = 0; j < rooms.at(i)->dmx_channels.size(); ++j)
+		{
+			int channel = rooms.at(i)->dmx_channels.at(j);
+			dmx->setLevel(channel, 0);
+		}
 	}
 	dmx->update();
 }
@@ -197,11 +209,19 @@ void Scene::digitalPinChanged(const int & pin_num)
 //--------------------------------------------------------------
 void Scene::updateSeparationRooms()
 {
+	//	Make sure magnets are on
 	if (ard->getDigital(2) != 0)
 	{
 		ard->sendDigital(2, 0, true);
-		//ofLogNotice("Updating underwater scene -> pin 2") << "1";
+		//ofLogNotice("Updating separation scenes -> pin 2") << "0";
 	}
+
+	//	Update lights
+	updateITlights();
+	
+
+	dmx->update();
+	
 }
 
 //--------------------------------------------------------------
@@ -217,4 +237,41 @@ void Scene::updateUnderwaterRoom()
 //--------------------------------------------------------------
 void Scene::updateInjectionRoom()
 {
+	if (ard->getDigital(2) != 1)
+	{
+		ard->sendDigital(2, 1, true);
+		//ofLogNotice("Updating injection scene -> pin 2") << "1";
+	}
+}
+
+void Scene::updateITlights()
+{
+	if (run_time < 20)
+	{
+		dmx->setLevel(IT_DRAIN_LC, 16);
+		dmx->setLevel(IT_CEILING_LC, 0);
+	}
+	else if (run_time > 20 && run_time < 50)
+	{
+		int level = ofMap(run_time, 20, 50, 16, 127);
+		dmx->setLevel(IT_DRAIN_LC, level);
+		dmx->setLevel(IT_CEILING_LC, 0);
+	}
+	else if (run_time > 50 && run_time < 80)
+	{
+		dmx->setLevel(IT_DRAIN_LC, 127);
+		dmx->setLevel(IT_CEILING_LC, 0);
+	}
+	else if (run_time > 80 && run_time < 100)
+	{
+		dmx->setLevel(IT_DRAIN_LC, 0);
+		dmx->setLevel(IT_CEILING_LC, 127);
+	}
+	else
+	{
+		int level = ofMap(run_time, 100, 120, 0, 16);
+		dmx->setLevel(IT_DRAIN_LC, level);
+		level = ofMap(run_time, 100, 120, 127, 0);
+		dmx->setLevel(IT_CEILING_LC, level);
+	}
 }

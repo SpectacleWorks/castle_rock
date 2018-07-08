@@ -66,7 +66,7 @@ void ofApp::drawGUI() {
 	ofDrawBitmapString("It Rooms", 30, 80);
 	ofSetColor(scene_map.at("separation")->dmx->getLevel(1));
 	ofDrawRectangle(30, 90, 40, 40);
-	ofSetColor(scene_map.at("separation")->dmx->getLevel(1));
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(2));
 	ofDrawRectangle(80, 90, 40, 40);
 
 	ofSetColor(255);
@@ -176,7 +176,6 @@ void ofApp::loadSceneSettings()
 		scenes.at(i)->length = scene_settings.getValue("scene:length", 0, i);
 		scenes.at(i)->ard_port = scene_settings.getValue("scene:arduino_port", "", i);
 		scenes.at(i)->num_rooms = scene_settings.getValue("scene:num_rooms", 0, i);
-		scenes.at(i)->rooms.assign(scenes.at(i)->num_rooms, Room());
 
 		//	Add to scene map (so we can reference scenes by name)
 		scene_map.insert(std::pair<string, Scene*>(scenes.at(i)->name, scenes.at(i)));
@@ -187,10 +186,22 @@ void ofApp::loadSceneSettings()
 		for (int j = 0; j < scenes.at(i)->num_rooms; ++j)
 		{
 			scene_settings.pushTag("room", j);
-			scenes.at(i)->rooms.at(j).name = scene_settings.getValue("name", "");
-			scenes.at(i)->rooms.at(j).midi_channel = scene_settings.getValue("midi_channel", 0);
-			scenes.at(i)->rooms.at(j).dmx_channel = scene_settings.getValue("dmx_channel", 0);
-			scenes.at(i)->rooms.at(j).dmx_init_level = scene_settings.getValue("dmx_init_level", 0);
+			scenes.at(i)->rooms.push_back(new Room);
+			scenes.at(i)->rooms.at(j)->name = scene_settings.getValue("name", "");
+			scenes.at(i)->rooms.at(j)->midi_channel = scene_settings.getValue("midi_channel", 0);
+			scenes.at(i)->room_map.insert(pair<string, Room*>(scenes.at(i)->rooms.at(j)->name, scenes.at(i)->rooms.at(j)));
+
+			int num_dmx = scene_settings.getValue("num_dmx", 0);
+			for (int k = 0; k < num_dmx; ++k)
+			{
+				int dmx_channel = scene_settings.getValue("dmx_channel", 0, k);
+				int init_level = scene_settings.getValue("dmx_init_level", 0, k);
+				scenes.at(i)->rooms.at(j)->dmx_map.insert(pair<int, int>(dmx_channel, init_level));
+				scenes.at(i)->rooms.at(j)->dmx_channels.push_back(dmx_channel);
+			}
+
+			//scenes.at(i)->rooms.at(j).dmx_channel = scene_settings.getValue("dmx_channel", 0);
+			//scenes.at(i)->rooms.at(j).dmx_init_level = scene_settings.getValue("dmx_init_level", 0);
 			scene_settings.popTag();
 		}
 

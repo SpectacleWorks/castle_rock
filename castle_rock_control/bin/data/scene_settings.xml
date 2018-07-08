@@ -24,20 +24,25 @@
 	<room>
 		<name>it</name>
 		<midi_channel>1</midi_channel>
+		<num_dmx>2</num_dmx>
 		<dmx_channel>1</dmx_channel>
-		<dmx_init_level>64</dmx_init_level>
+		<dmx_init_level>16</dmx_init_level>
+		<dmx_channel>2</dmx_channel>
+		<dmx_init_level>0</dmx_init_level>
 	</room>
 	<room>
 		<name>shining</name>
 		<midi_channel>2</midi_channel>
-		<dmx_channel>2</dmx_channel>
-		<dmx_init_level>64</dmx_init_level>
+		<num_dmx>1</num_dmx>
+		<dmx_channel>3</dmx_channel>
+		<dmx_init_level>32</dmx_init_level>
 	</room>
 	<room>
 		<name>shawshank</name>
 		<midi_channel>3</midi_channel>
-		<dmx_channel>3</dmx_channel>
-		<dmx_init_level>64</dmx_init_level>
+		<num_dmx>1</num_dmx>
+		<dmx_channel>4</dmx_channel>
+		<dmx_init_level>32</dmx_init_level>
 	</room>
 </scene>
 
@@ -50,8 +55,9 @@
 	<room>
 		<name>underwater</name>
 		<midi_channel>4</midi_channel>
-		<dmx_channel>4</dmx_channel>
-		<dmx_init_level>64</dmx_init_level>
+		<num_dmx>1</num_dmx>
+		<dmx_channel>5</dmx_channel>
+		<dmx_init_level>0</dmx_init_level>
 	</room>
 </scene>
 
