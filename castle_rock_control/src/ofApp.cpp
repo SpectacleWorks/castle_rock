@@ -6,7 +6,7 @@ void ofApp::setup(){
 	//	OF Settings
 	ofBackground(0);
 	ofSetFrameRate(30);
-	ofSetLogLevel(OF_LOG_VERBOSE);
+	//ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 
 	//	Read in XML settings
@@ -38,7 +38,14 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+	drawGUI();
+}
+
+//--------------------------------------------------------------
+void ofApp::drawGUI() {
+
 	//	Draw scene statuses
+	//	***************************************
 	//	Separation rooms
 	if (scene_map.at("separation")->b_Running)
 	{
@@ -46,6 +53,7 @@ void ofApp::draw(){
 		ofDrawRectangle(20, 20, 472, 40);
 		ofSetColor(255);
 		ofDrawBitmapString("Separation rooms running...", 30, 45);
+		ofDrawBitmapString(int(scene_map.at("separation")->length - scene_map.at("separation")->run_time), 456, 45);
 	}
 	else
 	{
@@ -54,36 +62,79 @@ void ofApp::draw(){
 		ofSetColor(255);
 		ofDrawBitmapString("Separation rooms idle...", 30, 45);
 	}
+	ofSetColor(255);
+	ofDrawBitmapString("It Rooms", 30, 80);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(1));
+	ofDrawRectangle(30, 90, 40, 40);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(1));
+	ofDrawRectangle(80, 90, 40, 40);
+
+	ofSetColor(255);
+	ofDrawBitmapString("Shining Rooms", 180, 80);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(2));
+	ofDrawRectangle(180, 90, 40, 40);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(2));
+	ofDrawRectangle(230, 90, 40, 40);
+
+	ofSetColor(255);
+	ofDrawBitmapString("Shawshank Rooms", 330, 80);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
+	ofDrawRectangle(330, 90, 40, 40);
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
+	ofDrawRectangle(380, 90, 40, 40);
+
 	//	Underwater room
 	if (scene_map.at("underwater")->b_Running)
 	{
 		ofSetColor(146, 45, 80);
-		ofDrawRectangle(20, 80, 472, 40);
+		ofDrawRectangle(20, 150, 472, 40);
 		ofSetColor(255);
-		ofDrawBitmapString("Underwater room running...", 30, 105);
+		ofDrawBitmapString("Underwater room running...", 30, 175);
+		ofDrawBitmapString(int(scene_map.at("underwater")->length - scene_map.at("underwater")->run_time), 456, 175);
+
 	}
 	else
 	{
 		ofSetColor(4, 80, 98);
-		ofDrawRectangle(20, 80, 472, 40);
+		ofDrawRectangle(20, 150, 472, 40);
 		ofSetColor(255);
-		ofDrawBitmapString("Underwater room idle...", 30, 105);
+		ofDrawBitmapString("Underwater room idle...", 30, 175);
 	}
+	ofSetColor(255);
+	ofDrawBitmapString("Headlight", 30, 210);
+	scene_map.at("underwater")->ard->getDigital(2) == 1 ?
+		ofSetColor(255) :
+		ofSetColor(0);
+	ofDrawRectangle(30, 220, 40, 40);
+
+	ofSetColor(255);
+	ofDrawBitmapString("Spotlight", 180, 210);
+	ofSetColor(scene_map.at("underwater")->dmx->getLevel(4));
+	ofDrawRectangle(180, 220, 40, 40);
+
+
 	//	Injection room
 	if (scene_map.at("injection")->b_Running)
 	{
 		ofSetColor(146, 45, 80);
-		ofDrawRectangle(20, 140, 472, 40);
+		ofDrawRectangle(20, 280, 472, 40);
 		ofSetColor(255);
-		ofDrawBitmapString("Injection room running...", 30, 165);
+		ofDrawBitmapString("Injection room running...", 30, 305);
+		ofDrawBitmapString(int(scene_map.at("injection")->length - scene_map.at("injection")->run_time), 456, 305);
 	}
 	else
 	{
 		ofSetColor(4, 80, 98);
-		ofDrawRectangle(20, 140, 472, 40);
+		ofDrawRectangle(20, 280, 472, 40);
 		ofSetColor(255);
-		ofDrawBitmapString("Injection room idle...", 30, 165);
+		ofDrawBitmapString("Injection room idle...", 30, 305);
 	}
+	ofSetColor(255);
+	ofDrawBitmapString("Alarm light", 30, 340);
+	scene_map.at("injection")->ard->getDigital(2) == 1 ?
+		ofSetColor(255, 0, 0) :
+		ofSetColor(0);
+	ofDrawRectangle(30, 350, 40, 40);
 }
 
 //--------------------------------------------------------------
@@ -256,11 +307,20 @@ void ofApp::keyPressed(int key){
 	case '6':
 		midiOut.sendNoteOn(6, NOTE, VELOCITY);
 		break;
+	case 'i':
+		scene_map.at("injection")->launchScene();
+		break;
 	case 'm':
 		setupMIDI();
 		break;
+	case 's':
+		scene_map.at("separation")->launchScene();
+		break;
 	case 'u':
 		scene_map.at("underwater")->launchScene();
+		break;
+	case 'U':
+		scene_map.at("underwater")->endScene();
 		break;
 	default:
 		break;

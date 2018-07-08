@@ -79,7 +79,20 @@ void Scene::updateScene()
 {
 	// Don't try to update the scene if it's not running
 	if (!b_Running)
+	{
+		if (name == "separation")
+		{
+			if (ofGetElapsedTimef() - end_time > 10)
+			{
+				ard->sendDigital(2, 0, true);
+			}
+			else
+			{
+				ard->sendDigital(2, 1, true);
+			}
+		}
 		return;
+	}
 
 	//	Update the run time
 	run_time = ofGetElapsedTimef() - start_time;
@@ -114,6 +127,16 @@ void Scene::endScene()
 {
 	//	Set scene status to not running
 	b_Running = false;
+	
+	//	Get the end time
+	end_time = ofGetElapsedTimef();
+
+	//	Unlock doors for separation rooms
+	if (name == "separation")
+	{
+		ard->sendDigital(2, 1, true);
+		//ofLogNotice("Updating separation scene -> pin 2") << "1";
+	}
 
 	//	Send any necessary MIDI note off messages
 	for (int i = 0; i < rooms.size(); ++i)
@@ -123,13 +146,27 @@ void Scene::endScene()
 			midiOut->sendNoteOff(rooms.at(i).midi_channel, NOTE, 0);
 		}
 	}
-
+	
 	//	Force pin D2 to low state
 	ard->sendDigital(2, 0, true);
 	//ofLogNotice("Updating pin 2") << "0";
 
 	//	Print to console
 	ofLogNotice("Scene ending") << name;
+}
+
+//--------------------------------------------------------------
+void Scene::eStop(){
+
+	//	Set pin 2 to LOW (opens doors)
+	ard->sendDigital(2, 0, true);
+
+	//	Set light levels to max brightness
+	for (int i = 0; i < rooms.size(); ++i)
+	{
+		dmx->setLevel(rooms.at(i).dmx_channel, 255);
+	}
+	dmx->update();
 }
 
 //--------------------------------------------------------------
@@ -160,6 +197,11 @@ void Scene::digitalPinChanged(const int & pin_num)
 //--------------------------------------------------------------
 void Scene::updateSeparationRooms()
 {
+	if (ard->getDigital(2) != 0)
+	{
+		ard->sendDigital(2, 0, true);
+		//ofLogNotice("Updating underwater scene -> pin 2") << "1";
+	}
 }
 
 //--------------------------------------------------------------

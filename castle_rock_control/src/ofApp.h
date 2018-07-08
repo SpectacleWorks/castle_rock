@@ -73,5 +73,8 @@ public:
 	//	DMX
 	string dmx_port;
 	ofxDmx dmx;
+
+	//	GUI
+	void drawGUI();
 	
 };

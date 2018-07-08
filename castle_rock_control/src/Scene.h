@@ -29,6 +29,7 @@ public:
 	void launchScene();
 	void updateScene();
 	void endScene();
+	void eStop();
 	void lightsOff();
 
 	void updateSeparationRooms();
@@ -44,6 +45,7 @@ public:
 	int num_rooms;
 
 	float start_time;
+	float end_time;
 	float run_time;
 
 	bool b_Running;
