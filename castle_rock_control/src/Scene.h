@@ -11,6 +11,7 @@ const int IT_DRAIN_DMX		= 1;
 const int IT_CEILING_DMX	= 2;
 const int SHINING_DMX		= 3;
 const int SHAWSHANK_DMX		= 4;
+const int UNDERWATER_DMX	= 5;
 
 struct Room
 {
@@ -48,6 +49,7 @@ public:
 	void updateItLights();
 	void updateShiningLights();
 	void updateShawshankLights();
+	void updateUnderwaterLights();
 
 	void digitalPinChanged(const int& pin_num);
 
@@ -62,6 +64,7 @@ public:
 	float run_time;
 
 	bool b_Running;
+	bool b_HardStop;
 
 	//	Rooms
 	vector<Room*> rooms;

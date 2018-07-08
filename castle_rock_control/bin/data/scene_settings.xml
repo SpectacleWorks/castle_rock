@@ -48,7 +48,7 @@
 
 <scene>
 	<name>underwater</name>
-	<length>30</length>
+	<length>60</length>
 	<arduino_port>COM6</arduino_port>
 	<num_rooms>1</num_rooms>
 

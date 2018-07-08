@@ -294,6 +294,14 @@ void ofApp::updateArduinos()
 	}
 }
 
+void ofApp::hardStop()
+{
+	for (int i = 0; i < scenes.size(); ++i)
+	{
+		scenes.at(i)->eStop();
+	}
+}
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
@@ -317,6 +325,9 @@ void ofApp::keyPressed(int key){
 		break;
 	case '6':
 		midiOut.sendNoteOn(6, NOTE, VELOCITY);
+		break;
+	case 'E':
+		hardStop();
 		break;
 	case 'i':
 		scene_map.at("injection")->launchScene();

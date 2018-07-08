@@ -7,6 +7,7 @@ Scene::Scene() :
 	start_time(0.0f),
 	run_time(0.0f),
 	b_Running(false),
+	b_HardStop(false),
 	b_SetupArd(false),
 	ard_port("")
 {
@@ -33,6 +34,7 @@ void Scene::setupArduino(const int & version)
 	//	Set pin D2 as digital output, pin D3 as digital input
 	ard->sendDigitalPinMode(2, ARD_OUTPUT);
 	ard->sendDigitalPinMode(3, ARD_INPUT);
+	ard->sendDigitalPinMode(5, ARD_INPUT);
 
 	//	Set initial pin states
 	ard->sendDigital(2, 0, true);
@@ -86,7 +88,7 @@ void Scene::updateScene()
 	{
 		if (name == "separation")
 		{
-			if (ofGetElapsedTimef() - end_time > 10)
+			if (ofGetElapsedTimef() - end_time > 10 || b_HardStop)
 			{
 				ard->sendDigital(2, 0, true);
 			}
@@ -163,7 +165,18 @@ void Scene::endScene()
 void Scene::eStop(){
 
 	//	Set pin 2 to LOW (opens doors)
-	ard->sendDigital(2, 0, true);
+	if(ard_port != "")
+		ard->sendDigital(2, 0, true);
+
+	//	Send out MIDI off messages
+	//	Send any necessary MIDI note off messages
+	for (int i = 0; i < rooms.size(); ++i)
+	{
+		if (rooms.at(i)->midi_channel != 0)
+		{
+			midiOut->sendNoteOff(rooms.at(i)->midi_channel, NOTE, 0);
+		}
+	}
 
 	//	Set light levels to max brightness
 	for (int i = 0; i < rooms.size(); ++i)
@@ -175,6 +188,8 @@ void Scene::eStop(){
 		}
 	}
 	dmx->update();
+
+	b_HardStop = true;
 }
 
 //--------------------------------------------------------------
@@ -204,6 +219,11 @@ void Scene::digitalPinChanged(const int & pin_num)
 		else
 			ofLogWarning("Scene already running") << name;
 	}
+	else if (pin_num == 5 && ard->getDigital(pin_num) == 1)
+	{
+		endScene();
+		ofLogWarning("Scene manunally stopped") << name;
+	}
 }
 
 //--------------------------------------------------------------
@@ -219,8 +239,8 @@ void Scene::updateSeparationRooms()
 	//	Update lights
 	updateItLights();
 	updateShiningLights();
+	updateShawshankLights();
 	
-
 	dmx->update();
 	
 }
@@ -233,6 +253,11 @@ void Scene::updateUnderwaterRoom()
 		ard->sendDigital(2, 1, true);
 		//ofLogNotice("Updating underwater scene -> pin 2") << "1";
 	}
+
+	//	Update lights
+	updateUnderwaterLights();
+
+	dmx->update();
 }
 
 //--------------------------------------------------------------
@@ -245,6 +270,7 @@ void Scene::updateInjectionRoom()
 	}
 }
 
+//--------------------------------------------------------------
 void Scene::updateItLights()
 {
 	if (run_time < 20)
@@ -277,6 +303,7 @@ void Scene::updateItLights()
 	}
 }
 
+//--------------------------------------------------------------
 void Scene::updateShiningLights()
 {
 	if (run_time < 20)
@@ -294,6 +321,7 @@ void Scene::updateShiningLights()
 	}
 }
 
+//--------------------------------------------------------------
 void Scene::updateShawshankLights()
 {
 	if (run_time < 20)
@@ -308,5 +336,24 @@ void Scene::updateShawshankLights()
 	else
 	{
 		dmx->setLevel(SHAWSHANK_DMX, 0);
+	}
+}
+
+//--------------------------------------------------------------
+void Scene::updateUnderwaterLights()
+{
+	if (run_time < 4)
+	{	
+		int level = ofMap(run_time, 0, 2, 0, 127);
+		dmx->setLevel(UNDERWATER_DMX, level);
+	}
+	else if (run_time > 4 && run_time < length - 4)
+	{
+		dmx->setLevel(UNDERWATER_DMX, 127);
+	}
+	else
+	{
+		int level = ofMap(run_time, length - 4, length, 127, 0);
+		dmx->setLevel(UNDERWATER_DMX, level);
 	}
 }
