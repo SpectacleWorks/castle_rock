@@ -7,8 +7,10 @@
 #include "ofxMidi.h"
 
 //	Constants
-const int IT_DRAIN_LC = 1;
-const int IT_CEILING_LC = 2;
+const int IT_DRAIN_DMX		= 1;
+const int IT_CEILING_DMX	= 2;
+const int SHINING_DMX		= 3;
+const int SHAWSHANK_DMX		= 4;
 
 struct Room
 {
@@ -43,7 +45,9 @@ public:
 	void updateUnderwaterRoom();
 	void updateInjectionRoom();
 
-	void updateITlights();
+	void updateItLights();
+	void updateShiningLights();
+	void updateShawshankLights();
 
 	void digitalPinChanged(const int& pin_num);
 

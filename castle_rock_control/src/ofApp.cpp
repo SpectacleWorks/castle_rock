@@ -71,16 +71,16 @@ void ofApp::drawGUI() {
 
 	ofSetColor(255);
 	ofDrawBitmapString("Shining Rooms", 180, 80);
-	ofSetColor(scene_map.at("separation")->dmx->getLevel(2));
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
 	ofDrawRectangle(180, 90, 40, 40);
-	ofSetColor(scene_map.at("separation")->dmx->getLevel(2));
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
 	ofDrawRectangle(230, 90, 40, 40);
 
 	ofSetColor(255);
 	ofDrawBitmapString("Shawshank Rooms", 330, 80);
-	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(4));
 	ofDrawRectangle(330, 90, 40, 40);
-	ofSetColor(scene_map.at("separation")->dmx->getLevel(3));
+	ofSetColor(scene_map.at("separation")->dmx->getLevel(4));
 	ofDrawRectangle(380, 90, 40, 40);
 
 	//	Underwater room

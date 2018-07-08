@@ -217,7 +217,8 @@ void Scene::updateSeparationRooms()
 	}
 
 	//	Update lights
-	updateITlights();
+	updateItLights();
+	updateShiningLights();
 	
 
 	dmx->update();
@@ -244,34 +245,68 @@ void Scene::updateInjectionRoom()
 	}
 }
 
-void Scene::updateITlights()
+void Scene::updateItLights()
 {
 	if (run_time < 20)
 	{
-		dmx->setLevel(IT_DRAIN_LC, 16);
-		dmx->setLevel(IT_CEILING_LC, 0);
+		dmx->setLevel(IT_DRAIN_DMX, 16);
+		dmx->setLevel(IT_CEILING_DMX, 0);
 	}
 	else if (run_time > 20 && run_time < 50)
 	{
 		int level = ofMap(run_time, 20, 50, 16, 127);
-		dmx->setLevel(IT_DRAIN_LC, level);
-		dmx->setLevel(IT_CEILING_LC, 0);
+		dmx->setLevel(IT_DRAIN_DMX, level);
+		dmx->setLevel(IT_CEILING_DMX, 0);
 	}
 	else if (run_time > 50 && run_time < 80)
 	{
-		dmx->setLevel(IT_DRAIN_LC, 127);
-		dmx->setLevel(IT_CEILING_LC, 0);
+		dmx->setLevel(IT_DRAIN_DMX, 127);
+		dmx->setLevel(IT_CEILING_DMX, 0);
 	}
 	else if (run_time > 80 && run_time < 100)
 	{
-		dmx->setLevel(IT_DRAIN_LC, 0);
-		dmx->setLevel(IT_CEILING_LC, 127);
+		dmx->setLevel(IT_DRAIN_DMX, 0);
+		dmx->setLevel(IT_CEILING_DMX, 127);
 	}
 	else
 	{
 		int level = ofMap(run_time, 100, 120, 0, 16);
-		dmx->setLevel(IT_DRAIN_LC, level);
+		dmx->setLevel(IT_DRAIN_DMX, level);
 		level = ofMap(run_time, 100, 120, 127, 0);
-		dmx->setLevel(IT_CEILING_LC, level);
+		dmx->setLevel(IT_CEILING_DMX, level);
+	}
+}
+
+void Scene::updateShiningLights()
+{
+	if (run_time < 20)
+	{
+		dmx->setLevel(SHINING_DMX, 64);
+	}
+	else if (run_time > 20 && run_time < 100)
+	{
+		int level = ofMap(run_time, 20, 100, 64, 32);
+		dmx->setLevel(SHINING_DMX, level);
+	}
+	else
+	{
+		dmx->setLevel(SHINING_DMX, 0);
+	}
+}
+
+void Scene::updateShawshankLights()
+{
+	if (run_time < 20)
+	{
+		dmx->setLevel(SHAWSHANK_DMX, 64);
+	}
+	else if (run_time > 20 && run_time < 100)
+	{
+		int level = ofMap(run_time, 20, 100, 64, 32);
+		dmx->setLevel(SHAWSHANK_DMX, level);
+	}
+	else
+	{
+		dmx->setLevel(SHAWSHANK_DMX, 0);
 	}
 }
