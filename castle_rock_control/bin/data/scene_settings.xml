@@ -3,6 +3,9 @@
 	<dmx_port>COM5</dmx_port>
 	<num_scenes>5</num_scenes>
 	<num_arduinos>3</num_arduinos>
+	<udp_command>!LETHALVIDEO-START</udp_command>
+	<udp_ip>127.0.0.1</udp_ip>
+	<udp_port>9999</udp_port>
 </general>
 
 <scene>

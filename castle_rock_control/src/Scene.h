@@ -5,6 +5,7 @@
 //	Addons
 #include "ofxDmx.h"
 #include "ofxMidi.h"
+#include "ofxNetwork.h"
 
 //	Constants
 const int IT_DRAIN_DMX		= 1;
@@ -33,11 +34,13 @@ public:
 	//*******************************************
 	//	Methods
 	void setupArduino(const int & version);
+	void setupUDP();
 
 	virtual void initScene();
 	virtual void launchScene();
 	virtual void updateScene();
 	virtual void endScene();
+	void sendUDP();
 
 	void eStop();
 	void restart();
@@ -83,4 +86,10 @@ public:
 
 	//	DMX
 	ofxDmx* dmx;
+
+	//	Networking
+	ofxUDPManager udpConnection;
+	string udp_command;
+	string udp_ip;
+	int udp_port;
 };

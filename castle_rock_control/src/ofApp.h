@@ -99,6 +99,11 @@ public:
 	string dmx_port;
 	ofxDmx dmx;
 
+	//	Networking
+	string udp_command;
+	string udp_ip;
+	int udp_port;
+
 	//	GUI
 	void drawGUI();
 	

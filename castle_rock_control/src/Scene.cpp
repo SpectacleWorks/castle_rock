@@ -9,7 +9,10 @@ Scene::Scene() :
 	b_Running(false),
 	b_HardStop(false),
 	b_SetupArd(false),
-	ard_port("")
+	ard_port(""),
+	udp_command(""),
+	udp_ip(""),
+	udp_port(0)
 {
 }
 
@@ -44,6 +47,15 @@ void Scene::setupArduino(const int & version)
 }
 
 //--------------------------------------------------------------
+void Scene::setupUDP()
+{
+	//create the socket and setup the address
+	udpConnection.Create();
+	udpConnection.Connect(udp_ip.c_str(), udp_port);
+	udpConnection.SetNonBlocking(true);
+}
+
+//--------------------------------------------------------------
 void Scene::initScene()
 {
 	//	Set intial light levels
@@ -56,6 +68,10 @@ void Scene::initScene()
 		}
 	}
 	dmx->update();
+
+	//	Networking
+	if (name == "injection")
+		setupUDP();
 }
 
 //--------------------------------------------------------------
@@ -161,8 +177,21 @@ void Scene::endScene()
 	ard->sendDigital(2, 0, true);
 	//ofLogNotice("Updating pin 2") << "0";
 
+	//	Send UDP message
+	if (name == "injection")
+		sendUDP();
+
 	//	Print to console
 	ofLogNotice("Scene ending") << name;
+}
+
+//--------------------------------------------------------------
+void Scene::sendUDP(){
+
+	udpConnection.Send(udp_command.c_str(), udp_command.length());
+
+	//	Print to console
+	ofLogNotice("Network message sent to trigger injection room camera");
 }
 
 //--------------------------------------------------------------
