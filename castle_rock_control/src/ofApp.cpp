@@ -303,6 +303,15 @@ void ofApp::hardStop()
 }
 
 //--------------------------------------------------------------
+void ofApp::restart()
+{
+	for (int i = 0; i < scenes.size(); ++i)
+	{
+		scenes.at(i)->restart();
+	}
+}
+
+//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
 	//	MIDI to Ableton Test
@@ -332,11 +341,20 @@ void ofApp::keyPressed(int key){
 	case 'i':
 		scene_map.at("injection")->launchScene();
 		break;
-	case 'm':
+	case 'I':
+		scene_map.at("injection")->endScene();
+		break;
+	case 'M':
 		setupMIDI();
+		break;
+	case 'R':
+		restart();
 		break;
 	case 's':
 		scene_map.at("separation")->launchScene();
+		break;
+	case 'S':
+		scene_map.at("separation")->endScene();
 		break;
 	case 'u':
 		scene_map.at("underwater")->launchScene();

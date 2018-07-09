@@ -38,6 +38,7 @@ public:
 	//	Updates
 	void updateArduinos();
 	void hardStop();
+	void restart();
 
 	//	Events
 	void keyPressed(int key);

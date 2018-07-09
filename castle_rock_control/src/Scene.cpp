@@ -88,11 +88,15 @@ void Scene::updateScene()
 	{
 		if (name == "separation")
 		{
-			if (ofGetElapsedTimef() - end_time > 10 || b_HardStop)
+			if (ofGetElapsedTimef() - end_time > 10)
 			{
 				ard->sendDigital(2, 0, true);
 			}
 			else
+			{
+				ard->sendDigital(2, 1, true);
+			}
+			if (b_HardStop)
 			{
 				ard->sendDigital(2, 1, true);
 			}
@@ -189,7 +193,15 @@ void Scene::eStop(){
 	}
 	dmx->update();
 
+	b_Running = false;
 	b_HardStop = true;
+}
+
+//--------------------------------------------------------------
+void Scene::restart()
+{
+	b_HardStop = false;
+	initScene();
 }
 
 //--------------------------------------------------------------

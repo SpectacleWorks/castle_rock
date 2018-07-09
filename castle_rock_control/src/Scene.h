@@ -40,6 +40,7 @@ public:
 	virtual void endScene();
 
 	void eStop();
+	void restart();
 	void lightsOff();
 
 	void updateSeparationRooms();
