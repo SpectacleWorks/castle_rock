@@ -15,6 +15,8 @@ void ofApp::setup(){
 	setupMIDI();
 	//	Connect to DMX interface
 	setupDMX();
+	//	GUI setup
+	setupGUI();
 	//	Initialize arduinos
 	initArduinos();
 	//	Initialize scenes
@@ -135,6 +137,9 @@ void ofApp::drawGUI() {
 		ofSetColor(255, 0, 0) :
 		ofSetColor(0);
 	ofDrawRectangle(30, 350, 40, 40);
+
+	//	Panel
+	midi_panel.draw();
 }
 
 //--------------------------------------------------------------
@@ -267,6 +272,42 @@ void ofApp::setupDMX()
 }
 
 //--------------------------------------------------------------
+void ofApp::setupGUI(){
+
+	//	Add listeners
+	for (int i = 0; i < 16; ++i)
+	{
+		ofxToggle toggle;
+		midi_toggles.push_back(toggle);
+	}
+	midi_toggles.at(0).addListener(this, &ofApp::toggled_01);
+	midi_toggles.at(1).addListener(this, &ofApp::toggled_02);
+	midi_toggles.at(2).addListener(this, &ofApp::toggled_03);
+	midi_toggles.at(3).addListener(this, &ofApp::toggled_04);
+	midi_toggles.at(4).addListener(this, &ofApp::toggled_05);
+	midi_toggles.at(5).addListener(this, &ofApp::toggled_06);
+	midi_toggles.at(6).addListener(this, &ofApp::toggled_07);
+	midi_toggles.at(7).addListener(this, &ofApp::toggled_08);
+	midi_toggles.at(8).addListener(this, &ofApp::toggled_09);
+	midi_toggles.at(9).addListener(this, &ofApp::toggled_10);
+	midi_toggles.at(10).addListener(this, &ofApp::toggled_11);
+	midi_toggles.at(11).addListener(this, &ofApp::toggled_12);
+	midi_toggles.at(12).addListener(this, &ofApp::toggled_13);
+	midi_toggles.at(13).addListener(this, &ofApp::toggled_14);
+	midi_toggles.at(14).addListener(this, &ofApp::toggled_15);
+	midi_toggles.at(15).addListener(this, &ofApp::toggled_16);
+
+	//	Setup panel
+	midi_panel.setup("", "settings.xml", 522, 20);
+	midi_panel.setName("MIDI Player");
+	for (int i = 0; i < 16; ++i)
+	{
+		midi_panel.add(midi_toggles.at(i).setup("Channel " + ofToString(i+1), false));
+	}
+	
+}
+
+//--------------------------------------------------------------
 void ofApp::initArduinos()
 {
 	//	Connect the arduino
@@ -317,24 +358,6 @@ void ofApp::keyPressed(int key){
 	//	MIDI to Ableton Test
 	switch (key)
 	{
-	case '1' :
-		midiOut.sendNoteOn(1, NOTE, VELOCITY);
-		break;
-	case '2':
-		midiOut.sendNoteOn(2, NOTE, VELOCITY);
-		break;
-	case '3':
-		midiOut.sendNoteOn(3, NOTE, VELOCITY);
-		break;
-	case '4':
-		midiOut.sendNoteOn(4, NOTE, VELOCITY);
-		break;
-	case '5':
-		midiOut.sendNoteOn(5, NOTE, VELOCITY);
-		break;
-	case '6':
-		midiOut.sendNoteOn(6, NOTE, VELOCITY);
-		break;
 	case 'E':
 		hardStop();
 		break;
@@ -413,6 +436,208 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
+void ofApp::sendMidiOn(const int& channel){
+	midiOut.sendNoteOn(channel, NOTE, VELOCITY);
+}
+
+//--------------------------------------------------------------
+void ofApp::sendMidiOff(const int& channel){
+	midiOut.sendNoteOff(channel, NOTE, 0);
+}
+
+//--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_01(bool& on) {
+	if (on)
+	{
+		sendMidiOn(1);
+	}
+	else
+	{
+		sendMidiOff(1);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_02(bool& on) {
+	if (on)
+	{
+		sendMidiOn(2);
+	}
+	else
+	{
+		sendMidiOff(2);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_03(bool& on) {
+	if (on)
+	{
+		sendMidiOn(3);
+	}
+	else
+	{
+		sendMidiOff(3);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_04(bool& on) {
+	if (on)
+	{
+		sendMidiOn(4);
+	}
+	else
+	{
+		sendMidiOff(4);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_05(bool& on) {
+	if (on)
+	{
+		sendMidiOn(5);
+	}
+	else
+	{
+		sendMidiOff(5);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_06(bool& on) {
+	if (on)
+	{
+		sendMidiOn(6);
+	}
+	else
+	{
+		sendMidiOff(6);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_07(bool& on) {
+	if (on)
+	{
+		sendMidiOn(7);
+	}
+	else
+	{
+		sendMidiOff(7);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_08(bool& on) {
+	if (on)
+	{
+		sendMidiOn(8);
+	}
+	else
+	{
+		sendMidiOff(8);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_09(bool& on) {
+	if (on)
+	{
+		sendMidiOn(9);
+	}
+	else
+	{
+		sendMidiOff(9);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_10(bool& on) {
+	if (on)
+	{
+		sendMidiOn(10);
+	}
+	else
+	{
+		sendMidiOff(10);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_11(bool& on) {
+	if (on)
+	{
+		sendMidiOn(11);
+	}
+	else
+	{
+		sendMidiOff(11);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_12(bool& on) {
+	if (on)
+	{
+		sendMidiOn(12);
+	}
+	else
+	{
+		sendMidiOff(12);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_13(bool& on) {
+	if (on)
+	{
+		sendMidiOn(13);
+	}
+	else
+	{
+		sendMidiOff(13);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_14(bool& on) {
+	if (on)
+	{
+		sendMidiOn(14);
+	}
+	else
+	{
+		sendMidiOff(14);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_15(bool& on) {
+	if (on)
+	{
+		sendMidiOn(15);
+	}
+	else
+	{
+		sendMidiOff(15);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::toggled_16(bool& on) {
+	if (on)
+	{
+		sendMidiOn(16);
+	}
+	else
+	{
+		sendMidiOff(16);
+	}
 }
