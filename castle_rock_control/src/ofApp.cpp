@@ -195,6 +195,7 @@ void ofApp::setupGUI(){
 		ofxToggle toggle;
 		midi_toggles.push_back(toggle);
 	}
+
 	midi_toggles.at( 0).addListener(this, &ofApp::toggled_01);
 	midi_toggles.at( 1).addListener(this, &ofApp::toggled_02);
 	midi_toggles.at( 2).addListener(this, &ofApp::toggled_03);

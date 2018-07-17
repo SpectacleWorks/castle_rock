@@ -9,16 +9,6 @@
 </general>
 
 <scene>
-	<name>lobby</name>
-	<length>10</length>
-	<num_rooms>1</num_rooms>
-
-	<room>
-		<name>lobby</name>
-	</room>
-</scene>
-
-<scene>
 	<name>separation</name>
 	<length>120</length>
 	<arduino_port>COM1</arduino_port>
@@ -77,7 +67,7 @@
 
 <scene>
 	<name>injection</name>
-	<length>10</length>
+	<length>120</length>
 	<arduino_port>COM2</arduino_port>
 	<num_rooms>1</num_rooms>
 
