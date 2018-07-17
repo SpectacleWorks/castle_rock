@@ -92,6 +92,13 @@ void Scene::launchScene()
 		}
 	}
 
+	//	Send UDP message
+	if (name == "injection")
+	{
+		sendUDP();
+		ofLogNotice("UDP message sent") << name;
+	}
+
 	//	Print to console
 	ofLogNotice("Scene launched") << name;
 }
@@ -176,10 +183,6 @@ void Scene::endScene()
 	//	Force pin D2 to low state
 	ard->sendDigital(2, 0, true);
 	//ofLogNotice("Updating pin 2") << "0";
-
-	//	Send UDP message
-	if (name == "injection")
-		sendUDP();
 
 	//	Print to console
 	ofLogNotice("Scene ending") << name;
