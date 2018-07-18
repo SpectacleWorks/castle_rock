@@ -217,16 +217,16 @@ void ofApp::setupGUI(){
 	midi_panel.setup("", "settings.xml", 522, 20);
 	midi_panel.setName("MIDI Player");
 
-	midi_panel.add(midi_toggles.at(0).setup("Ch 1: It Room", false));
-	midi_panel.add(midi_toggles.at(1).setup("Ch 2: The Shining Room", false));
-	midi_panel.add(midi_toggles.at(2).setup("Ch 3: Shawshank Room", false));
-	midi_panel.add(midi_toggles.at(3).setup("Ch 4: Underwater Rumble", false));
-	midi_panel.add(midi_toggles.at(4).setup("Ch 5: Underwater Loops", false));
-	midi_panel.add(midi_toggles.at(5).setup("Ch 6: Underwater Car", false));
-	midi_panel.add(midi_toggles.at(6).setup("Ch 7: Maze 1", false));
-	midi_panel.add(midi_toggles.at(7).setup("Ch 8: Maze 2", false));
-	midi_panel.add(midi_toggles.at(8).setup("Ch 9: Maze 3", false));
-	midi_panel.add(midi_toggles.at(9).setup("Ch 10: Maze 4", false));
+	midi_panel.add(midi_toggles.at( 0).setup("Ch  1: It Room", false));
+	midi_panel.add(midi_toggles.at( 1).setup("Ch  2: The Shining Room", false));
+	midi_panel.add(midi_toggles.at( 2).setup("Ch  3: Shawshank Room", false));
+	midi_panel.add(midi_toggles.at( 3).setup("Ch  4: Underwater Rumble", false));
+	midi_panel.add(midi_toggles.at( 4).setup("Ch  5: Underwater Loops", false));
+	midi_panel.add(midi_toggles.at( 5).setup("Ch  6: Underwater Car", false));
+	midi_panel.add(midi_toggles.at( 6).setup("Ch  7: Maze 1", false));
+	midi_panel.add(midi_toggles.at( 7).setup("Ch  8: Maze 2", false));
+	midi_panel.add(midi_toggles.at( 8).setup("Ch  9: Maze 3", false));
+	midi_panel.add(midi_toggles.at( 9).setup("Ch 10: Maze 4", false));
 	midi_panel.add(midi_toggles.at(10).setup("Ch 11: Injection Loop", false));
 	midi_panel.add(midi_toggles.at(11).setup("Ch 12: Security Alarm", false));
 	midi_panel.add(midi_toggles.at(12).setup("Ch 13: Security Loop", false));

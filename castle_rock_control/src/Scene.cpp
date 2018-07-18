@@ -137,7 +137,7 @@ void Scene::updateScene()
 		return;
 	}
 
-	//	Route update functions by scenne name
+	//	Route update functions by scene name
 	if (name == "separation")
 	{
 		updateSeparationRooms();
