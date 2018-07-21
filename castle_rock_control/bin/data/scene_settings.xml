@@ -4,7 +4,7 @@
 	<num_scenes>5</num_scenes>
 	<num_arduinos>3</num_arduinos>
 	<udp_command>!TAKEPHOTO</udp_command>
-	<udp_ip>192.168.110.45</udp_ip>
+	<udp_ip>192.168.110.158</udp_ip>
 	<udp_port>4888</udp_port>
 </general>
 
@@ -17,18 +17,16 @@
 	<room>
 		<name>it</name>
 		<midi_channel>1</midi_channel>
-		<num_dmx>2</num_dmx>
+		<num_dmx>1</num_dmx>
 		<dmx_channel>12</dmx_channel>
-		<dmx_init_level>16</dmx_init_level>
-		<dmx_channel>2</dmx_channel>
-		<dmx_init_level>0</dmx_init_level>
+		<dmx_init_level>65</dmx_init_level>
 	</room>
 	<room>
 		<name>shining</name>
 		<midi_channel>2</midi_channel>
 		<num_dmx>1</num_dmx>
-		<dmx_channel>3</dmx_channel>
-		<dmx_init_level>64</dmx_init_level>
+		<dmx_channel>10</dmx_channel>
+		<dmx_init_level>65</dmx_init_level>
 	</room>
 	<room>
 		<name>shawshank</name>
@@ -41,16 +39,28 @@
 
 <scene>
 	<name>underwater</name>
-	<length>60</length>
+	<length>90</length>
 	<arduino_port>COM6</arduino_port>
 	<num_rooms>1</num_rooms>
 
 	<room>
 		<name>underwater</name>
-		<midi_channel>4</midi_channel>
+		<midi_channel>6</midi_channel>
 		<num_dmx>1</num_dmx>
-		<dmx_channel>5</dmx_channel>
+		<dmx_channel>14</dmx_channel>
 		<dmx_init_level>0</dmx_init_level>
+	</room>
+</scene>
+
+<scene>
+	<name>bathroom</name>
+	<num_rooms>1</num_rooms>
+
+	<room>
+		<name>bathroom</name>
+		<num_dmx>1</num_dmx>
+		<dmx_channel>20</dmx_channel>
+		<dmx_init_level>50</dmx_init_level>
 	</room>
 </scene>
 
@@ -62,17 +72,30 @@
 	<room>
 		<name>maze</name>
 		<midi_channel>5</midi_channel>
+		<num_dmx>6</num_dmx>
+		<dmx_channel>5</dmx_channel>
+		<dmx_init_level>100</dmx_init_level>
+		<dmx_channel>6</dmx_channel>
+		<dmx_init_level>100</dmx_init_level>
+		<dmx_channel>21</dmx_channel>
+		<dmx_init_level>255</dmx_init_level>
+		<dmx_channel>22</dmx_channel>
+		<dmx_init_level>255</dmx_init_level>
+		<dmx_channel>23</dmx_channel>
+		<dmx_init_level>255</dmx_init_level>
+		<dmx_channel>24</dmx_channel>
+		<dmx_init_level>255</dmx_init_level>
 	</room>
 </scene>
 
 <scene>
 	<name>injection</name>
-	<length>120</length>
+	<length>60</length>
 	<arduino_port>COM2</arduino_port>
 	<num_rooms>1</num_rooms>
 
 	<room>
 		<name>injection</name>
-		<midi_channel>6</midi_channel>
+		<midi_channel>12</midi_channel>
 	</room>
 </scene>

@@ -173,7 +173,7 @@ void ofApp::setupDMX()
 
 	//	Connect
 	bool b_DMX_Connect = dmx.connect(dmx_port);
-
+	//bool b_DMX_Connect = false;
 	if (!b_DMX_Connect)
 		ofLogWarning("DMX") << "Couldn't connect to DMX interface through port " << dmx_port;
 	else
@@ -260,6 +260,26 @@ void ofApp::initArduinos()
 	}
 }
 
+void ofApp::restartArduinos()
+{
+	ards.clear();
+	//	Connect the arduino
+	for (int i = 0; i < scenes.size(); ++i)
+	{
+		int ard_count = ards.size();
+
+		if (scenes.at(i)->ard_port != "")
+		{
+			ards.push_back(new ofArduino);
+			scenes.at(i)->ard = ards.at(ard_count);
+			scenes.at(i)->ard->connect(scenes.at(i)->ard_port, 9600);
+			scenes.at(i)->ard->sendFirmwareVersionRequest();
+			ofAddListener(scenes.at(i)->ard->EInitialized, scenes.at(i), &Scene::setupArduino);
+		}
+	}
+
+}
+
 //--------------------------------------------------------------
 void ofApp::updateArduinos()
 {
@@ -292,6 +312,9 @@ void ofApp::keyPressed(int key){
 	//	MIDI to Ableton Test
 	switch (key)
 	{
+	case 'A':
+		initArduinos();
+		break;
 	case 'E':
 		hardStop();
 		break;

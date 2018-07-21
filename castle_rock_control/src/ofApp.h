@@ -36,6 +36,7 @@ public:
 	void setupDMX();
 	void setupGUI();
 	void initArduinos();
+	void restartArduinos();
 
 	//	Updates
 	void updateArduinos();
@@ -94,6 +95,7 @@ public:
 
 	//	Arduinos
 	vector<ofArduino*> ards;
+	bool bArdsConnected;
 	
 	//	DMX
 	string dmx_port;
@@ -109,4 +111,40 @@ public:
 	
 	ofxPanel midi_panel;
 	vector<ofxToggle> midi_toggles;
+
+	//DMX
+	ofxPanel panel;
+	ofParameter<int> chan1;
+	ofParameter<int> chan2;
+	ofParameter<int> chan3;
+	ofParameter<int> chan4;
+	ofParameter<int> chan5;
+	ofParameter<int> chan6;
+	ofParameter<int> chan7;
+	ofParameter<int> chan8;
+	ofParameter<int> chan9;
+	ofParameter<int> chan10;
+	ofParameter<int> chan11;
+	ofParameter<int> chan12;
+	ofParameter<int> chan13;
+	ofParameter<int> chan14;
+	ofParameter<int> chan15;
+	ofParameter<int> chan16;
+
+	ofParameter<int> chan17;
+	ofParameter<int> chan18;
+	ofParameter<int> chan19;
+	ofParameter<int> chan20;
+	ofParameter<int> chan21;
+	ofParameter<int> chan22;
+	ofParameter<int> chan23;
+	ofParameter<int> chan24;
+	ofParameter<int> chan25;
+	ofParameter<int> chan26;
+	ofParameter<int> chan27;
+	ofParameter<int> chan28;
+	ofParameter<int> chan29;
+	ofParameter<int> chan30;
+	ofParameter<int> chan31;
+	ofParameter<int> chan32;
 };

@@ -319,31 +319,38 @@ void Scene::updateItLights()
 {
 	if (run_time < 20)
 	{
-		dmx->setLevel(IT_DRAIN_DMX, 16);
-		dmx->setLevel(IT_CEILING_DMX, 0);
+		//dmx->setLevel(IT_DRAIN_DMX, 16);
+		//dmx->setLevel(IT_CEILING_DMX, 0);
+		dmx->setLevel(12, 32);
+		dmx->setLevel(9, 32);
+		dmx->setLevel(10, 32);
 	}
-	else if (run_time > 20 && run_time < 50)
+	else if (run_time > 20 && run_time < 25)
 	{
-		int level = ofMap(run_time, 20, 50, 16, 127);
-		dmx->setLevel(IT_DRAIN_DMX, level);
-		dmx->setLevel(IT_CEILING_DMX, 0);
+		int level = ofMap(run_time, 20, 25, 32, 0);
+		dmx->setLevel(12, level);
+		dmx->setLevel(9, level);
+		dmx->setLevel(10, level);
 	}
-	else if (run_time > 50 && run_time < 80)
+	else if (run_time > 25 && run_time < 45)
 	{
-		dmx->setLevel(IT_DRAIN_DMX, 127);
-		dmx->setLevel(IT_CEILING_DMX, 0);
+		dmx->setLevel(12, 0);
+		dmx->setLevel(9, 0);
+		dmx->setLevel(10, 0);
 	}
-	else if (run_time > 80 && run_time < 100)
+	else if (run_time > 45 && run_time < 75)
 	{
-		dmx->setLevel(IT_DRAIN_DMX, 0);
-		dmx->setLevel(IT_CEILING_DMX, 127);
+		int level = ofMap(run_time, 45, 75, 0, 64);
+		dmx->setLevel(12, level);
+		dmx->setLevel(9, level);
+		dmx->setLevel(10, level);
 	}
 	else
 	{
 		int level = ofMap(run_time, 100, 120, 0, 16);
-		dmx->setLevel(IT_DRAIN_DMX, level);
-		level = ofMap(run_time, 100, 120, 127, 0);
-		dmx->setLevel(IT_CEILING_DMX, level);
+		dmx->setLevel(12, 64);
+		dmx->setLevel(9, 64);
+		dmx->setLevel(10, 64);
 	}
 }
 
